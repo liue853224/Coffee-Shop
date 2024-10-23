@@ -1,13 +1,20 @@
 // 加入環境變數
-require('dotenv').config()
+require("dotenv").config();
 // 載入express、設置port
-const express = require('express')
-const app = express()
-const port = process.env.PORT || 3000
+const express = require("express");
+const bodyParser = require("body-parser");
+const app = express();
+const port = process.env.PORT || 3000;
 // 設置node內建path模組
-const path = require('path')
+const path = require("path");
+// 使用 body-parser 中間件
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+// 引入API路由
+const apiRoutes = require("./routes");
+// 使用API路由
+app.use("/api", apiRoutes);
 
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`)
-    }
-)
+  console.log(`Server running at http://localhost:${port}`);
+});
