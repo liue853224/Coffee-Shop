@@ -5,8 +5,11 @@ const authenticate = require("../../middleware/apiAuth");
 
 // 引入控制器
 const userController = require("../../controllers/user-controller");
+const productController = require("../../controllers/product-controller");
+//product routes
+router.get("/products", productController.getAllProducts);
 
-// 註冊路由
+// register route
 router.post("/signup", userController.signUp);
 
 module.exports = router;
