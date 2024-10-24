@@ -1,6 +1,6 @@
 // 加入環境變數
 require("dotenv").config();
-// 載入express、設置port
+// 載入express、設置port、設置body parser
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
