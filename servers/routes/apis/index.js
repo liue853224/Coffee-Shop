@@ -8,6 +8,7 @@ const userController = require("../../controllers/user-controller");
 const productController = require("../../controllers/product-controller");
 //product routes
 router.get("/products", productController.getAllProducts);
+router.get("/products/:id", productController.getProduct);
 
 // register route
 router.post("/signup", userController.signUp);
