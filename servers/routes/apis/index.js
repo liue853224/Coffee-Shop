@@ -7,8 +7,9 @@ const authenticate = require("../../middleware/apiAuth");
 const userController = require("../../controllers/user-controller");
 const productController = require("../../controllers/product-controller");
 //product routes
-router.get("/products", productController.getAllProducts);
 router.get("/products/:id", productController.getProduct);
+router.get("/products", productController.getAllProducts);
+router.post("/products", productController.createProduct);
 
 // register route
 router.post("/signup", userController.signUp);

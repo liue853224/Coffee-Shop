@@ -58,6 +58,45 @@ const productController = {
       })
       .catch((err) => next(err));
   },
+  createProduct: (req, res, next) => {
+    const {
+      name,
+      type,
+      roastLevel,
+      flavor,
+      price,
+      description,
+      rating,
+      imageURL,
+    } = req.body;
+    // 檢查必填欄位
+    if (
+      [name, type, roastLevel, flavor, price, description].some(
+        (param) => !param
+      )
+    ) {
+      return res
+        .status(400)
+        .json({ status: "error", message: "產品資料不完整，請檢查所有欄位" });
+    }
+    Product.create({
+      name,
+      type,
+      roastLevel,
+      flavor,
+      price,
+      description,
+      rating,
+      imageURL,
+    })
+      .then((product) =>
+        res.status(200).json({
+          status: "success",
+          data: product,
+        })
+      )
+      .catch((err) => next(err));
+  },
 };
 
 module.exports = productController;
