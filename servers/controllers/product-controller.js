@@ -43,12 +43,13 @@ const productController = {
       .catch((err) => next(err));
   },
   getProduct: (req, res, next) => {
-    Product.findByPk(req.params.id)
+    const { id } = req.params.id;
+    Product.findByPk(id)
       .then((product) => {
         if (!product) {
           return res.status(404).json({
             status: "error",
-            message: "Product didn't exist",
+            message: "產品不存在",
           });
         }
         return res.status(200).json({
@@ -79,6 +80,7 @@ const productController = {
         .status(400)
         .json({ status: "error", message: "產品資料不完整，請檢查所有欄位" });
     }
+    //操作資料庫,將資料新增
     Product.create({
       name,
       type,
@@ -95,6 +97,53 @@ const productController = {
           data: product,
         })
       )
+      .catch((err) => next(err));
+  },
+  updateProduct: (req, res, next) => {
+    const { id } = req.params;
+    const {
+      name,
+      type,
+      roastLevel,
+      flavor,
+      price,
+      description,
+      rating,
+      imageURL,
+    } = req.body;
+
+    //檢查必要欄位
+    if (
+      [name, type, roastLevel, flavor, price, description].some(
+        (param) => !param
+      )
+    ) {
+      return res
+        .status(400)
+        .json({ status: "error", message: "產品資料不完整，請檢查所有欄位" });
+    }
+    // 更新資料庫
+    Product.findByPk(id)
+      .then((product) => {
+        if (!product) {
+          return res
+            .status(404)
+            .json({ status: "error", message: "產品不存在" });
+        }
+        return product.update({
+          name,
+          type,
+          roastLevel,
+          flavor,
+          price,
+          description,
+          rating,
+          imageURL,
+        });
+      })
+      .then((updatedProduct) => {
+        res.status(200).json({ status: "success", data: updatedProduct });
+      })
       .catch((err) => next(err));
   },
 };
