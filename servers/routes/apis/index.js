@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const passport = require("../../config/passport");
 const authenticate = require("../../middleware/apiAuth");
 
 // 引入控制器
@@ -14,5 +13,6 @@ router.post("/products", productController.createProduct);
 
 // register route
 router.post("/signup", userController.signUp);
+router.post("/signin", userController.signIn);
 
 module.exports = router;

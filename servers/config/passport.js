@@ -14,18 +14,15 @@ const jwtOptions = {
 passport.use(
   new JWTStrategy(jwtOptions, (jwtPayload, cb) => {
     User.findByPk(jwtPayload.id)
-      .then((user) => cb(null, user))
+      .then((user) => {
+        if (!user) {
+          return done(null, false, { message: "User not found" });
+        }
+        console.log("我要看的資料:", user);
+        return cb(null, user);
+      })
       .catch((err) => cb(err));
   })
 );
-
-passport.serializeUser((user, cb) => {
-  cb(null, user.id);
-});
-passport.deserializeUser((id, cb) => {
-  return User.findByPk(id)
-    .then((user) => cb(null, user.toJSON()))
-    .catch((err) => cb(err));
-});
 
 module.exports = passport;
