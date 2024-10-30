@@ -43,7 +43,7 @@ const productController = {
       .catch((err) => next(err));
   },
   getProduct: (req, res, next) => {
-    const { id } = req.params.id;
+    const { id } = req.params;
     Product.findByPk(id)
       .then((product) => {
         if (!product) {
@@ -145,6 +145,27 @@ const productController = {
         res.status(200).json({ status: "success", data: updatedProduct });
       })
       .catch((err) => next(err));
+  },
+  deleteProduct: (req, res, next) => {
+    const { id } = req.params;
+    Product.findByPk(id)
+      .then((product) => {
+        if (!product) {
+          return res
+            .status(400)
+            .json({ status: "error", message: "找不到產品" });
+        }
+        return product.destroy();
+      })
+      .then((deletedProduct) => {
+        return res.status(200).json({
+          status: "success",
+          data: deletedProduct,
+        });
+      })
+      .catch((err) => {
+        next(err);
+      });
   },
 };
 

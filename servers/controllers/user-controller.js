@@ -1,6 +1,5 @@
 // 引入資料庫
-const db = require("../models");
-const { User } = db;
+const { User } = require("../models");
 // 引入密碼加密套件
 const bcrypt = require("bcryptjs");
 //加入jwt模組
@@ -8,25 +7,39 @@ const jwt = require("jsonwebtoken");
 
 const userController = {
   signUp: (req, res, next) => {
-    User.findOne({ where: { email: req.body.email } })
+    const { name, email, password, isAdmin } = req.body;
+    //確認資料庫連接
+    User.sequelize
+      .authenticate()
+      .then(() => {
+        console.log("User資料庫連接成功");
+        return User.findOne({ where: { email: email } });
+      })
       .then((user) => {
         //驗證輸入的email與資料庫裡的email是否有重複
         if (user) {
-          throw new Error("email已註冊過");
+          return res.json({ status: "error", message: "信箱已註冊過" });
         }
-        return bcrypt.hash(req.body.password, 10); //確認過沒有重複email將密碼hash
+        return bcrypt.hash(password, 10); //確認過沒有重複email將密碼hash
       })
       .then((hash) => {
         return User.create({
-          name: req.body.name,
-          email: req.body.email,
+          name: name,
+          email: email,
           password: hash,
+          isAdmin: isAdmin || false,
         });
       })
       .then((user) => {
+        const userData = {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          isAdmin: user.isAdmin,
+        };
         return res.status(200).json({
-          status: "success",
-          data: user,
+          status: "創建成功",
+          data: userData,
         });
       })
       .catch((err) => next(err));
@@ -62,6 +75,7 @@ const userController = {
           id: user.id,
           email: user.email,
           name: user.name,
+          isAdmin: user.isAdmin,
         };
         return res.json({
           message: "登入成功",
