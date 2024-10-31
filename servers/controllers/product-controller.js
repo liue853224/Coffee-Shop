@@ -9,12 +9,12 @@ const productController = {
     const validRoastLevels = ["light", "medium", "dark"];
 
     // 建立篩選條件物件
-    let whereCondition = {};
+    let condition = {};
 
     // 檢查type是否有效並加入條件篩選物件中
     if (type) {
       if (validTypes.includes(type)) {
-        whereCondition.type = type;
+        condition.type = type;
       } else {
         return res
           .status(400)
@@ -25,7 +25,7 @@ const productController = {
     // 檢查roastLevel是否有效並加入條件篩選物件中
     if (roastLevel) {
       if (validRoastLevels.includes(roastLevel)) {
-        whereCondition.roastLevel = roastLevel;
+        condition.roastLevel = roastLevel;
       } else {
         return res
           .status(400)
@@ -33,7 +33,7 @@ const productController = {
       }
     }
 
-    Product.findAll({ where: whereCondition })
+    Product.findAll({ where: condition })
       .then((products) => {
         res.status(200).json({
           status: "success",
@@ -41,6 +41,27 @@ const productController = {
         });
       })
       .catch((err) => next(err));
+  },
+  getTopProducts: (req, res, next) => {
+    Product.findAll({
+      order: [["rating", "DESC"]],
+      limit: 10,
+    })
+      .then((topProducts) => {
+        if (!topProducts) {
+          return res.status(404).json({
+            status: "error",
+            message: "似乎沒有找到相關的產品...",
+          });
+        }
+        return res.status(200).json({
+          status: "success",
+          data: topProducts,
+        });
+      })
+      .catch((err) => {
+        next(err);
+      });
   },
   getProduct: (req, res, next) => {
     const { id } = req.params;
