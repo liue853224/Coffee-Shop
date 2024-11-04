@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
+
+//引入middleware
 const authenticate = require("../../middleware/apiAuth");
+const authAdmin = require("../../middleware/apiAuthAdmin");
 
 // 引入控制器
 const userController = require("../../controllers/user-controller");
@@ -10,10 +13,25 @@ const favoriteController = require("../../controllers/favorite-controller");
 //product routes
 router.get("/products/top", productController.getTopProducts);
 router.get("/products/:id", productController.getProduct);
-router.put("/products/:id", productController.updateProduct);
-router.delete("/products/:id", productController.deleteProduct);
+router.put(
+  "/products/:id",
+  authenticate,
+  authAdmin,
+  productController.updateProduct
+);
+router.delete(
+  "/products/:id",
+  authenticate,
+  authAdmin,
+  productController.deleteProduct
+);
 router.get("/products", productController.getAllProducts);
-router.post("/products", productController.createProduct);
+router.post(
+  "/products",
+  authenticate,
+  authAdmin,
+  productController.createProduct
+);
 
 //favorite routes
 router.delete("/favorite/:id", authenticate, favoriteController.removeFavorite);
