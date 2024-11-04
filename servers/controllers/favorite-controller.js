@@ -24,6 +24,7 @@ const favoriteController = {
         return Favorite.create({ userId, productId }).then((favorited) => {
           res.status(201).json({
             status: "success",
+            message: "新增成功",
             data: favorited,
           });
         });
@@ -32,6 +33,28 @@ const favoriteController = {
         console.error("Error adding favorite:", err);
         next(err);
       });
+  },
+  removeFavorite: (req, res, next) => {
+    const userId = req.user.id;
+    const productId = req.params.id;
+    if (!productId) {
+      return res
+        .status(400)
+        .json({ status: "error", message: "productId不存在" });
+    }
+    Favorite.destroy({ where: { userId, productId } })
+      .then((deletedFavorite) => {
+        if (deletedFavorite === 0) {
+          return res
+            .status(404)
+            .json({ status: "error", message: "找不到喜愛項目" });
+        }
+        return res.status(200).json({
+          status: "success",
+          message: `用戶${userId}將產品${productId}移除最愛`,
+        });
+      })
+      .catch((err) => next(err));
   },
 };
 

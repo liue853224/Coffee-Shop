@@ -16,7 +16,9 @@ router.get("/products", productController.getAllProducts);
 router.post("/products", productController.createProduct);
 
 //favorite routes
+router.delete("/favorite/:id", authenticate, favoriteController.removeFavorite);
 router.post("/favorite", authenticate, favoriteController.addFavorite);
+
 // user routes
 router.post("/signup", userController.signUp);
 router.post("/signin", authenticate, userController.signIn);
