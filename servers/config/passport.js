@@ -18,7 +18,6 @@ passport.use(
         if (!user) {
           return done(null, false, { message: "User not found" });
         }
-        console.log("我要看的資料:", user);
         return cb(null, user);
       })
       .catch((err) => cb(err));

@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
     static associate(models) {
       Product.belongsToMany(models.User, {
-        through: "Favorite",
+        through: models.Favorite,
         foreignKey: "productId",
         as: "favoritedUsers",
       });

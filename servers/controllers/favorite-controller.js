@@ -1,6 +1,20 @@
-const { Favorite } = require("../models");
+const { Favorite, Product } = require("../models");
 
 const favoriteController = {
+  getFavorites: (req, res, next) => {
+    const userId = req.user.id;
+    Favorite.findAll({
+      where: { userId },
+      include: [{ model: Product, as: "product" }],
+    })
+      .then((favorite) => {
+        res.status(200).json({
+          message: "收藏產品清單",
+          data: favorite,
+        });
+      })
+      .catch((err) => next(err));
+  },
   addFavorite: (req, res, next) => {
     const userId = req.user.id;
     const { productId } = req.body;
@@ -19,7 +33,7 @@ const favoriteController = {
         if (existingFavorite) {
           return res
             .status(409)
-            .json({ status: "errror", message: "已經加入最愛了" });
+            .json({ status: "error", message: "已經加入最愛了" });
         }
         return Favorite.create({ userId, productId }).then((favorited) => {
           res.status(201).json({
@@ -30,7 +44,6 @@ const favoriteController = {
         });
       })
       .catch((err) => {
-        console.error("Error adding favorite:", err);
         next(err);
       });
   },
