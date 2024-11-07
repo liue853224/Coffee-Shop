@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import ProductCard from "../components/ProductCard";
 
 const ProductListPage = () => {
   const [products, setProducts] = useState([]); // 初始化為空陣列，避免 undefined
@@ -28,26 +29,22 @@ const ProductListPage = () => {
   return (
     <div className="container my-4">
       <h2 className="text-center mb-4">產品清單</h2>
-      <ul className="list-group">
+      <div className="row">
         {products && products.length > 0 ? (
           products.map((product) => (
-            <li
-              className="list-group-item d-flex justify-content-between align-items-center"
-              key={product.id}
-            >
-              <div>
-                <h5 className="mb-1">{product.name}</h5>
-                <p className="mb-1 text-muted">價格：${product.price}</p>
-              </div>
-              <span className="badge bg-primary rounded-pill">
-                {product.rating}
-              </span>
-            </li>
+            <div className="col-md-4" key={product.id}>
+              <ProductCard
+                name={product.name}
+                roastLevel={product.roastLevel}
+                price={product.price}
+                description={product.description}
+              />
+            </div>
           ))
         ) : (
           <p className="text-center">目前沒有產品</p>
         )}
-      </ul>
+      </div>
     </div>
   );
 };

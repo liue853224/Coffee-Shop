@@ -10,7 +10,7 @@ const ProductCard = ({ name, roastLevel, price, description }) => (
       </Card.Subtitle>
       <Card.Text>{description}</Card.Text>
       <Card.Text className="text-primary">單價: ${price}</Card.Text>
-      <Button variant="primary">加入收藏</Button>
+      <Button>加入收藏</Button>
     </Card.Body>
   </Card>
 );
