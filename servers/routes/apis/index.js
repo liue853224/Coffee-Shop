@@ -9,6 +9,8 @@ const authAdmin = require("../../middleware/apiAuthAdmin");
 const userController = require("../../controllers/user-controller");
 const productController = require("../../controllers/product-controller");
 const favoriteController = require("../../controllers/favorite-controller");
+// 引入middleware
+const upload = require("../../middleware/multer");
 
 //product routes
 router.get("/products/top", productController.getTopProducts);
@@ -17,6 +19,7 @@ router.put(
   "/products/:id",
   authenticate,
   authAdmin,
+  upload.single("image"),
   productController.updateProduct
 );
 router.delete(
@@ -30,6 +33,7 @@ router.post(
   "/products",
   authenticate,
   authAdmin,
+  upload.single("image"),
   productController.createProduct
 );
 

@@ -2,6 +2,7 @@
 require("dotenv").config();
 
 // 載入express、設置port、設置body parser
+const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
@@ -11,6 +12,9 @@ const cors = require("cors");
 app.use(cors());
 //確認數據庫連接狀況
 const { sequelize } = require("./models");
+
+//引用upload靜態資料
+app.use("/upload", express.static(path.join(__dirname, "upload")));
 
 sequelize
   .authenticate()
@@ -23,9 +27,6 @@ sequelize
 
 //引入passport
 const passport = require("./config/passport");
-
-// 設置node內建path模組
-const path = require("path");
 
 // 使用 body-parser 中間件
 app.use(bodyParser.json());

@@ -14,6 +14,7 @@ const Header = () => {
     if (userData) {
       setUser(JSON.parse(userData));
     }
+    console.log(userData);
   }, []);
 
   const handleLogout = () => {
@@ -85,6 +86,19 @@ const Header = () => {
                 >
                   意見回饋
                 </Nav.Link>
+                {user && user.isAdmin ? (
+                  <>
+                    <Nav.Link
+                      href="/admin"
+                      className="mx-2"
+                      style={{ color: "#ffbb66", whiteSpace: "nowrap" }}
+                      onMouseEnter={(e) => (e.target.style.color = "#ffaa44")}
+                      onMouseLeave={(e) => (e.target.style.color = "#ffbb66")}
+                    >
+                      後台管理
+                    </Nav.Link>
+                  </>
+                ) : null}
               </Nav>
             </Navbar.Collapse>
           </Col>

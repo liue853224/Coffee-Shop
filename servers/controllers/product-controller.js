@@ -2,7 +2,8 @@
 const { Product } = require("../models");
 //引入helper
 const { getPagination, getOffset } = require("../helper/pagination-helper");
-
+// 引入file-helper
+const { localFileHandler } = require("../helper/file-helper");
 const productController = {
   getAllProducts: (req, res, next) => {
     const { type, roastLevel } = req.query;
@@ -93,6 +94,7 @@ const productController = {
       .catch((err) => next(err));
   },
   createProduct: (req, res, next) => {
+    const { file } = req;
     const {
       name,
       type,
@@ -113,17 +115,19 @@ const productController = {
         .status(400)
         .json({ status: "error", message: "產品資料不完整，請檢查所有欄位" });
     }
-    //操作資料庫,將資料新增
-    Product.create({
-      name,
-      type,
-      roastLevel,
-      flavor,
-      price,
-      description,
-      rating,
-      imageURL,
-    })
+    localFileHandler(file)
+      .then((filePath) => {
+        Product.create({
+          name,
+          type,
+          roastLevel,
+          flavor,
+          price,
+          description,
+          rating,
+          imageURL: filePath || null,
+        });
+      })
       .then((product) =>
         res.status(200).json({
           status: "success",
@@ -133,6 +137,7 @@ const productController = {
       .catch((err) => next(err));
   },
   updateProduct: (req, res, next) => {
+    const { file } = req;
     const { id } = req.params;
     const {
       name,
@@ -155,9 +160,10 @@ const productController = {
         .status(400)
         .json({ status: "error", message: "產品資料不完整，請檢查所有欄位" });
     }
-    // 更新資料庫
-    Product.findByPk(id)
-      .then((product) => {
+    // 更新資料庫與處理file
+    Promise.all([Product.findByPk(id), localFileHandler(file)])
+
+      .then(([product, filePath]) => {
         if (!product) {
           return res
             .status(404)
@@ -171,7 +177,7 @@ const productController = {
           price,
           description,
           rating,
-          imageURL,
+          imageURL: filePath || product.imageURL,
         });
       })
       .then((updatedProduct) => {

@@ -27,7 +27,7 @@ const LoginPage = () => {
       localStorage.setItem("token", token); // 儲存 JWT 到 localStorage
       localStorage.setItem("user", JSON.stringify(user)); // 儲存用戶資料
       // 跳轉到主頁
-      window.location.href = "/"; // 可以根據需要調整
+      window.location.href = "/";
     } catch (err) {
       setError(err.response?.data?.message || "登入失敗，請稍後再試");
     } finally {

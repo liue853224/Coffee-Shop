@@ -2,7 +2,12 @@ import React from "react";
 import { Card, Button } from "react-bootstrap";
 
 const ProductCard = ({ name, roastLevel, price, description }) => (
-  <Card className="mb-4 shadow-sm">
+  <Card
+    className="mb-4 shadow-sm"
+    style={{
+      backgroundColor: "#fcf1e8",
+    }}
+  >
     <Card.Body>
       <Card.Title>{name}</Card.Title>
       <Card.Subtitle className="mb-2 text-muted">
@@ -13,7 +18,7 @@ const ProductCard = ({ name, roastLevel, price, description }) => (
       <Button
         style={{
           backgroundColor: "#ffaa44",
-          border: "2px solid black",
+          border: "2px solid #ffaa44",
           whiteSpace: "nowrap",
         }}
       >
