@@ -1,9 +1,16 @@
 //引入資料庫
 const { Product } = require("../models");
+//引入helper
+const { getPagination, getOffset } = require("../helper/pagination-helper");
 
 const productController = {
   getAllProducts: (req, res, next) => {
     const { type, roastLevel } = req.query;
+    //宣告分頁變數
+    const DEFAULT_LIMIT = 9;
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || DEFAULT_LIMIT;
+    const offset = getOffset(limit, page);
     // 建立條件檢查
     const validTypes = ["coffee-beans", "drip-coffee"];
     const validRoastLevels = ["light", "medium", "dark"];
@@ -33,11 +40,16 @@ const productController = {
       }
     }
 
-    Product.findAll({ where: condition })
+    Product.findAll({
+      where: condition,
+      limit: limit,
+      offset: offset,
+    })
       .then((products) => {
         res.status(200).json({
           status: "success",
           data: products,
+          pagination: getPagination(limit, page, products.count),
         });
       })
       .catch((err) => next(err));

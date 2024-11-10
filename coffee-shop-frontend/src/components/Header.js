@@ -5,7 +5,7 @@ import Col from "react-bootstrap/Col";
 import { Navbar, Container, Button } from "react-bootstrap";
 
 const Header = () => (
-  <Navbar bg="dark" variant="dark" expand="md" className="py-3 shadow-sm">
+  <Navbar bg="dark" variant="dark" expand="lg" className="py-3 shadow-sm">
     <Container>
       <Row className="w-100">
         <Col md={4} className="d-flex align-items-center">
@@ -69,7 +69,10 @@ const Header = () => (
             </Nav>
           </Navbar.Collapse>
         </Col>
-        <Col md={2} className="d-flex justify-content-end align-items-center">
+        <Col
+          md={{ span: 2, offset: 1 }}
+          className="d-flex justify-content-end align-items-center"
+        >
           <Button
             variant="outline-light"
             href="/login"

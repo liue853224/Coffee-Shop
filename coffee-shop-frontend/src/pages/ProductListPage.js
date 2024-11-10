@@ -1,30 +1,36 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ProductCard from "../components/ProductCard";
+import Paginator from "../components/Paginator";
+
+const BASE_URL = "http://localhost:3000/api";
 
 const ProductListPage = () => {
   const [products, setProducts] = useState([]); // 初始化為空陣列，避免 undefined
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+
+  const fetchProducts = async (page) => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/products?page=${page}&limit=9`
+      );
+      console.log(response);
+
+      setProducts(response.data.data);
+      setTotalPage(response.data.pagination.totalPage);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:3000/api/products");
-        console.log(response.data);
-        setProducts(response.data.data); // 確保 products 是陣列格式
-      } catch (err) {
-        setError("無法載入產品資料");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (loading) return <p>載入中...</p>;
-  if (error) return <p>{error}</p>;
+    fetchProducts(currentPage);
+  }, [currentPage]);
 
   return (
     <div className="container my-4">
@@ -45,6 +51,11 @@ const ProductListPage = () => {
           <p className="text-center">目前沒有產品</p>
         )}
       </div>
+      <Paginator
+        currentPage={currentPage}
+        totalPage={totalPage}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 };
