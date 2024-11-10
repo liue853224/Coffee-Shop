@@ -40,6 +40,6 @@ router.post("/favorite", authenticate, favoriteController.addFavorite);
 
 // user routes
 router.post("/signup", userController.signUp);
-router.post("/signin", authenticate, userController.signIn);
+router.post("/signin", userController.signIn);
 
 module.exports = router;
