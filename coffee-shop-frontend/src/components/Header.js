@@ -89,7 +89,7 @@ const Header = () => {
                 {user && user.isAdmin ? (
                   <>
                     <Nav.Link
-                      href="/admin"
+                      href="/admin/products"
                       className="mx-2"
                       style={{ color: "#ffbb66", whiteSpace: "nowrap" }}
                       onMouseEnter={(e) => (e.target.style.color = "#ffaa44")}

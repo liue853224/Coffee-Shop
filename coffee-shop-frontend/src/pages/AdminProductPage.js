@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import ProductCard from "../components/ProductCard";
 import Paginator from "../components/Paginator";
-
+import AdminProductsCard from "../components/AdminProductsCard";
 const BASE_URL = "http://localhost:3000/api";
 
-const ProductListPage = () => {
-  const [products, setProducts] = useState([]); // 初始化為空陣列，避免 undefined
+const AdminProductPage = () => {
+  const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 
@@ -15,31 +14,29 @@ const ProductListPage = () => {
       const response = await axios.get(
         `${BASE_URL}/products?page=${page}&limit=9`
       );
-      console.log(response);
-
+      console.log(response.data);
       setProducts(response.data.data);
       setTotalPage(response.data.pagination.totalPage);
     } catch (err) {
       console.error(err);
     }
   };
-
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-
   useEffect(() => {
-    fetchProducts();
+    fetchProducts(currentPage);
   }, [currentPage]);
 
   return (
-    <div className="container my-4">
-      <h2 className="text-center mb-4">產品清單</h2>
+    <div>
+      <h2 className="text-center mb-4">後台管理-產品清單</h2>
       <div className="row">
         {products && products.length > 0 ? (
           products.map((product) => (
             <div className="col-md-4" key={product.id}>
-              <ProductCard
+              <AdminProductsCard
+                id={product.id}
                 name={product.name}
                 roastLevel={product.roastLevel}
                 price={product.price}
@@ -48,7 +45,9 @@ const ProductListPage = () => {
             </div>
           ))
         ) : (
-          <p className="text-center">目前沒有產品</p>
+          <div>
+            <h3>沒有載入產品資料</h3>
+          </div>
         )}
       </div>
       <Paginator
@@ -60,4 +59,4 @@ const ProductListPage = () => {
   );
 };
 
-export default ProductListPage;
+export default AdminProductPage;
