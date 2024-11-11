@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Button } from "react-bootstrap";
 import Paginator from "../components/Paginator";
 import AdminProductsCard from "../components/AdminProductsCard";
+import { useNavigate } from "react-router-dom";
 const BASE_URL = "http://localhost:3000/api";
 
 const AdminProductPage = () => {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-
+  const navigate = useNavigate();
   const fetchProducts = async (page) => {
     try {
       const response = await axios.get(
@@ -21,6 +23,9 @@ const AdminProductPage = () => {
       console.error(err);
     }
   };
+  const handleNew = () => {
+    navigate("/admin/products/new");
+  };
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -29,8 +34,19 @@ const AdminProductPage = () => {
   }, [currentPage]);
 
   return (
-    <div>
+    <div className=" row">
       <h2 className="text-center mb-4">後台管理-產品清單</h2>
+      <Button
+        style={{
+          backgroundColor: "#6f4e37",
+          border: "none",
+          padding: "10px 20px",
+        }}
+        className="row center  "
+        onClick={handleNew}
+      >
+        新增產品
+      </Button>
       <div className="row">
         {products && products.length > 0 ? (
           products.map((product) => (

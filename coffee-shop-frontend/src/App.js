@@ -7,6 +7,7 @@ import ProductListPage from "./pages/ProductListPage";
 import LoginPage from "./pages/LoginPage";
 import AdminProductPage from "./pages/AdminProductPage";
 import EditProductCard from "./components/EditProductCard";
+import AdminNewProductPage from "./pages/AdminNewProductPage";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/admin/products" element={<AdminProductPage />} />
         <Route path="/admin/products/edit/:id" element={<EditProductCard />} />
+        <Route path="/admin/products/new" element={<AdminNewProductPage />} />
       </Routes>
       <Footer />
     </Router>
