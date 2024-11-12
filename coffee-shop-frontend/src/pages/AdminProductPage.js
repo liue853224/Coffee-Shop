@@ -4,8 +4,10 @@ import { Button } from "react-bootstrap";
 import Paginator from "../components/Paginator";
 import AdminProductsCard from "../components/AdminProductsCard";
 import { useNavigate } from "react-router-dom";
-const BASE_URL = "http://localhost:3000/api";
+const BASE_URL = "http://localhost:3000/api/admin";
 
+const token = localStorage.getItem("token");
+axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 const AdminProductPage = () => {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);

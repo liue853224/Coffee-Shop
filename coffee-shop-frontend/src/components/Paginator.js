@@ -18,9 +18,6 @@ const Paginator = ({ currentPage, totalPage, onPageChange }) => {
           key={page}
           active={page === currentPage}
           onClick={() => onPageChange(page)}
-          style={{
-            backgroundColor: "#6f4e37",
-          }}
         >
           {page}
         </Pagination.Item>

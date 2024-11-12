@@ -12,6 +12,14 @@ const favoriteController = require("../../controllers/favorite-controller");
 // 引入middleware
 const upload = require("../../middleware/multer");
 
+//admin routes
+router.get(
+  "/admin/products",
+  authenticate,
+  authAdmin,
+  productController.getAllProducts
+);
+
 //product routes
 router.get("/products/top", productController.getTopProducts);
 router.get("/products/:id", productController.getProduct);
