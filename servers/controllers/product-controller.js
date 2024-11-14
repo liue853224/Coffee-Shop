@@ -95,16 +95,8 @@ const productController = {
   },
   createProduct: (req, res, next) => {
     const { file } = req;
-    const {
-      name,
-      type,
-      roastLevel,
-      flavor,
-      price,
-      description,
-      rating,
-      imageURL,
-    } = req.body;
+    const { name, type, roastLevel, flavor, price, description, rating } =
+      req.body;
     // 檢查必填欄位
     if (
       [name, type, roastLevel, flavor, price, description].some(
@@ -115,9 +107,11 @@ const productController = {
         .status(400)
         .json({ status: "error", message: "產品資料不完整，請檢查所有欄位" });
     }
+
     localFileHandler(file)
       .then((filePath) => {
-        Product.create({
+        const imageBaseUrl = `http://localhost:3000${filePath}`;
+        return Product.create({
           name,
           type,
           roastLevel,
@@ -125,7 +119,7 @@ const productController = {
           price,
           description,
           rating,
-          imageURL: filePath || null,
+          imageUrl: imageBaseUrl || null,
         });
       })
       .then((product) =>

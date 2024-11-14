@@ -18,7 +18,6 @@ const AdminProductPage = () => {
       const response = await axios.get(
         `${BASE_URL}/products?page=${page}&limit=9`
       );
-      console.log(response.data);
       setProducts(response.data.data);
       setTotalPage(response.data.pagination.totalPage);
     } catch (err) {
@@ -59,6 +58,7 @@ const AdminProductPage = () => {
                 roastLevel={product.roastLevel}
                 price={product.price}
                 description={product.description}
+                imageUrl={product.imageUrl}
               />
             </div>
           ))

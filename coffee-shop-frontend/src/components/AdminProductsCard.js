@@ -1,10 +1,17 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-
-const AdminProductsCard = ({ id, name, roastLevel, price, description }) => {
+const BASE_URL = "http://localhost:3000";
+const AdminProductsCard = ({
+  id,
+  name,
+  roastLevel,
+  price,
+  description,
+  imageUrl,
+}) => {
   const navigate = useNavigate();
-
+  const fullImageUrl = `${BASE_URL}${imageUrl}`;
   const handleEdit = () => {
     navigate(`/admin/products/edit/${id}`);
   };
@@ -15,6 +22,7 @@ const AdminProductsCard = ({ id, name, roastLevel, price, description }) => {
         backgroundColor: "#fcf1e8",
       }}
     >
+      <Card.Img variant="top" src={fullImageUrl} alt={name} />
       <Card.Body>
         <Card.Title>{name}</Card.Title>
         <Card.Subtitle className="mb-2 text-muted">

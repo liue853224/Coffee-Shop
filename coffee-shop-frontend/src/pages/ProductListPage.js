@@ -44,6 +44,7 @@ const ProductListPage = () => {
                 roastLevel={product.roastLevel}
                 price={product.price}
                 description={product.description}
+                imageURL={product.imageURL}
               />
             </div>
           ))

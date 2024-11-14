@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { Form, Button, Container } from "react-bootstrap";
+import axios from "axios";
+const BASE_URL = "http://localhost:3000/api/admin";
 
 const AdminNewProductPage = () => {
   const [product, setProduct] = useState({
@@ -9,6 +11,7 @@ const AdminNewProductPage = () => {
     flavor: "",
     price: "",
     description: "",
+    imageURL: null,
   });
 
   const handleChange = (e) => {
@@ -16,10 +19,29 @@ const AdminNewProductPage = () => {
     setProduct({ ...product, [name]: value });
   };
 
+  const handleFileChange = (e) => {
+    setProduct({ ...product, image: e.target.files[0] });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: Add logic to submit the new product to the API
-    console.log("New Product:", product);
+    const formData = new FormData();
+    for (const key in product) {
+      formData.append(key, product[key]);
+    }
+    axios
+      .post(`${BASE_URL}/products`, formData, {
+        headers: {
+          "Content-Type": "multipart/form/data",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => {
+        console.log("上傳成功", response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -108,6 +130,16 @@ const AdminNewProductPage = () => {
             placeholder="輸入產品描述"
             rows={3}
             required
+          />
+        </Form.Group>
+
+        <Form.Group controlId="productImageUrl" className="mb-3">
+          <Form.Label>上傳照片</Form.Label>
+          <Form.Control
+            type="file"
+            name="image"
+            accept="image/*"
+            onChange={handleFileChange}
           />
         </Form.Group>
 

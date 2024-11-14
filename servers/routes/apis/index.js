@@ -19,31 +19,31 @@ router.get(
   authAdmin,
   productController.getAllProducts
 );
-
-//product routes
-router.get("/products/top", productController.getTopProducts);
-router.get("/products/:id", productController.getProduct);
+router.post(
+  "/admin/products",
+  authenticate,
+  authAdmin,
+  upload.single("image"),
+  productController.createProduct
+);
 router.put(
-  "/products/:id",
+  "/admin/products/:id",
   authenticate,
   authAdmin,
   upload.single("image"),
   productController.updateProduct
 );
 router.delete(
-  "/products/:id",
+  "/admin/products/:id",
   authenticate,
   authAdmin,
   productController.deleteProduct
 );
+
+//product routes
+router.get("/products/top", productController.getTopProducts);
+router.get("/products/:id", productController.getProduct);
 router.get("/products", productController.getAllProducts);
-router.post(
-  "/products",
-  authenticate,
-  authAdmin,
-  upload.single("image"),
-  productController.createProduct
-);
 
 //favorite routes
 router.delete("/favorite/:id", authenticate, favoriteController.removeFavorite);

@@ -1,13 +1,14 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
 
-const ProductCard = ({ name, roastLevel, price, description }) => (
+const ProductCard = ({ name, roastLevel, price, description, imageURL }) => (
   <Card
     className="mb-4 shadow-sm"
     style={{
       backgroundColor: "#fcf1e8",
     }}
   >
+    <Card.Img variant="top" src={imageURL} alt={name} />
     <Card.Body>
       <Card.Title>{name}</Card.Title>
       <Card.Subtitle className="mb-2 text-muted">
