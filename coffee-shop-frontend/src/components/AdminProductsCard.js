@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+
 const BASE_URL = "http://localhost:3000";
 const AdminProductsCard = ({
   id,
@@ -9,12 +10,17 @@ const AdminProductsCard = ({
   price,
   description,
   imageUrl,
+  onDelete,
 }) => {
   const navigate = useNavigate();
   const fullImageUrl = `${BASE_URL}${imageUrl}`;
   const handleEdit = () => {
     navigate(`/admin/products/edit/${id}`);
   };
+  const handleDelete = () => {
+    onDelete(id, name);
+  };
+
   return (
     <Card
       className="mb-4 shadow-sm"
@@ -39,6 +45,15 @@ const AdminProductsCard = ({
           }}
         >
           修改
+        </Button>
+        <Button
+          onClick={handleDelete}
+          variant="danger"
+          style={{
+            whiteSpace: "nowrap",
+          }}
+        >
+          刪除
         </Button>
       </Card.Body>
     </Card>

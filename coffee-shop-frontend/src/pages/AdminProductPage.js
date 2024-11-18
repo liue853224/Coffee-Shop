@@ -27,8 +27,21 @@ const AdminProductPage = () => {
   const handleNew = () => {
     navigate("/admin/products/new");
   };
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
+  };
+
+  const handleDelete = async (id, name) => {
+    const confirmDelete = window.confirm(`是否確定要刪除${name}?`);
+    if (confirmDelete) {
+      try {
+        await axios.delete(`${BASE_URL}/products/${id}`);
+        fetchProducts(currentPage);
+      } catch (error) {
+        console.error("刪除失敗:", error);
+      }
+    }
   };
   useEffect(() => {
     fetchProducts(currentPage);
@@ -59,6 +72,7 @@ const AdminProductPage = () => {
                 price={product.price}
                 description={product.description}
                 imageUrl={product.imageUrl}
+                onDelete={handleDelete}
               />
             </div>
           ))
