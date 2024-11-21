@@ -29,7 +29,7 @@ const ProductListPage = () => {
   };
 
   useEffect(() => {
-    fetchProducts();
+    fetchProducts(currentPage);
   }, [currentPage]);
 
   return (
@@ -44,7 +44,7 @@ const ProductListPage = () => {
                 roastLevel={product.roastLevel}
                 price={product.price}
                 description={product.description}
-                imageURL={product.imageURL}
+                imageUrl={product.imageUrl}
               />
             </div>
           ))
