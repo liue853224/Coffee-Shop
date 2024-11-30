@@ -14,7 +14,7 @@ module.exports = {
         price: Math.floor(Math.random() * 100) + 300, // 隨機價格在300到400之間
         description: `這是第 ${i} 個產品的描述`,
         rating: (Math.random() * 5).toFixed(1), // 隨機評分 0~5之間的小數點一位
-        imageUrl: "/upload/IMG_8735.JPEG",
+        imageUrl: "/upload/cofe-bean.jpg",
         createdAt: new Date(),
         updatedAt: new Date(),
       });
